@@ -28,6 +28,8 @@ def validate(text):
         return "entry exceeds %d characters (%d)" % (MAX_CHARS, len(text))
     if not text.strip():
         return "entry is only whitespace"
+    if text != text.strip():
+        return "entry has leading or trailing whitespace"
     if "\n" in text or "\r" in text:
         return "entry must be a single line"
     for ch in text:
@@ -69,6 +71,8 @@ def self_test():
     check("chosen entry", ENTRY, True)
     check("empty", "", False)
     check("whitespace only", "   \n\t  ", False)
+    check("leading whitespace", "  joke", False)
+    check("trailing whitespace", "joke  ", False)
     check("multi-line", "setup\npunchline", False)
     check("over limit", "x" * 201, False)
     check("at limit", "x" * 200, True)
